@@ -1,0 +1,25 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name=""viewport content=""widht=device-width>
+        <title>EJEMPLO LOCALSTORASGE</title>
+    </head>
+<body>
+    
+    <p id="score"></p>
+    <button onclick="sumar()">+1</button>
+    <script>
+        const scoreDisplay = document.querySelector("#score")
+        let score = localStorage.getItem("score") || 0
+        scoreDisplay.textContent= score;
+
+    
+        function sumar(){
+            score++
+            scoreDisplay.te
+            localStorage.setItem("score", score)
+        }
+        
+    </script>
+</body>
+</html>
