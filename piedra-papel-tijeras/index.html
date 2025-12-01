@@ -1,78 +1,159 @@
+<!DOCTYPE html>
 <html>
-    <head>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>PIEDRA,PAPEL,TIJERA</title>
-        
-    </head>
-    <body>
-        
-            <p id="score"></p>
-            <p>
-                <span id="jugador">?</span>
-                <span>VS</span>
-                <span id="enemigo">?</span>
-            </p>
-            <p id="resultado">haz tu eleccion</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PIEDRA, PAPEL, TIJERA</title>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Piedra, Papel o Tijeras</h1>
 
+        <p>
+            Puntuación: <span id="score">0</span> | Récord: <span id="record">0</span>
+        </p>
+
+        <p>Vidas: <span id="vidas">3</span></p>
+
+        <p>
+            <span id="jugador">?</span>
+            <span>VS</span>
+            <span id="enemigo">?</span>
+        </p>
+
+        <p id="resultado">haz tu eleccion</p>
+
+        <p id="game-over-message">
+            ¡GAME OVER! Puntuación final: <span id="final-score">0</span>
+        </p>
+
+        <div id="contenedor-botones">
+            <button class="choice-button" onclick="jugar('papel')">Papel</button>
+            <button class="choice-button" onclick="jugar('piedra')">Piedra</button>
+            <button class="choice-button" onclick="jugar('tijera')">Tijera</button>
+        </div>
+    </div>
+    
+    <script>
+        const displayScore = document.querySelector("#score");
+        const displayRecord = document.querySelector("#record");
+        const displayVidas = document.querySelector("#vidas");
+        const eleccionJugador = document.querySelector("#jugador");
+        const eleccionEnemigo = document.querySelector("#enemigo");
+        const displayResultado = document.querySelector("#resultado"); 
+        const displayGameOver = document.querySelector("#game-over-message");
+        const displayFinalScore = document.querySelector("#final-score");
+        const contenedorBotones = document.querySelector("#contenedor-botones");
+
+        const Vidas = 3;
+        const elecciones = ["piedra", "papel", "tijera"];
+
+        let score = 0;
+        let vidas = Vidas;
+        let record = parseInt(localStorage.getItem('RPSHighScore')) || 0;
+        let isGameOver = false;
+
+        displayScore.textContent = score;
+        displayRecord.textContent = record;
+        displayVidas.textContent = vidas;
+
+        function choose(array) {
+            return array[parseInt(Math.random() * array.length)];
+        }
+        
+        function actualizarDisplay() {
+            displayScore.textContent = score;
+            displayVidas.textContent = vidas;
+            displayRecord.textContent = record;
+        }
+
+        function guardarRecord() {
+            if (score > record) {
+                record = score;
+                localStorage.setItem('RPSHighScore', record);
+            }
+        }
+        
+        function finDeJuego() {
+            isGameOver = true;
+            guardarRecord();
             
-                <button onclick="jugar()">Papel</button>
-                <button onclick="jugar()">Piedra</button>
-                <button onclick="jugar()">Tijera</button>
+            displayFinalScore.textContent = score;
+            displayGameOver.style.display = 'block';
+            displayResultado.style.display = 'none';
+
+            document.querySelectorAll('.choice-button').forEach(btn => btn.disabled = true);
             
+            const reiniciarBtn = document.createElement('button');
+            reiniciarBtn.textContent = 'Volver a Jugar';
+            reiniciarBtn.id = 'restart-btn';
+            reiniciarBtn.onclick = reiniciarJuego;
+            contenedorBotones.appendChild(reiniciarBtn);
+        }
         
+        function reiniciarJuego() {
+            score = 0;
+            vidas = Vidas;
+            isGameOver = false;
 
-    </body>
-</html>
-        <script>
-            const displayScore = document.querySelector("#score");
-            const eleccionJugador = document.querySelector("#jugador");
-            const eleccionEnemigo = document.querySelector("#enemigo");
-            const displayResultado = document.querySelector("#resulado");
+            eleccionJugador.textContent = '?';
+            eleccionEnemigo.textContent = '?';
+            displayResultado.textContent = 'haz tu eleccion';
+            displayGameOver.style.display = 'none';
+            displayResultado.style.display = 'block';
 
-            let score = 0
-            displayScore.textContent=score
+            document.querySelectorAll('.choice-button').forEach(btn => btn.disabled = false);
+            const restartBtn = document.getElementById('restart-btn');
+            if (restartBtn) {
+                contenedorBotones.removeChild(restartBtn); 
+            }
+            actualizarDisplay();
+        }
 
-            console.log(parseInt(Math.random()*100()))
-            const elecciones =["piedra","papel","tijera"]
+        function empatar(playerChoice, computerChoice) {
+            displayResultado.textContent = `Empate! (Tú: ${playerChoice}, PC: ${computerChoice})`; 
+        }
+        
+        function ganar(playerChoice, computerChoice) {
+            score += 1;
+            guardarRecord();
+            displayResultado.textContent = `Has ganado! (+1 punto) (Tú: ${playerChoice}, PC: ${computerChoice})`;
+        }
+        
+        function perder(playerChoice, computerChoice) {
+            vidas -= 1;
+            displayResultado.textContent = `Perdedor! (-1 vida) (Tú: ${playerChoice}, PC: ${computerChoice})`;
+            
+            if (vidas <= 0) {
+                finDeJuego();
+            }
+        }
 
-            function choose(array){
-                return array[parseInt(Math.random()*array.length)]
+        function jugar(eleccion) {
+            if (isGameOver) return;
+            
+            const eleccionEnemigo = choose(elecciones);
+            
+            eleccionJugador.textContent = eleccion.charAt(0).toUpperCase() + eleccion.slice(1);
+            eleccionEnemigo.textContent = eleccionEnemigo.charAt(0).toUpperCase() + eleccionEnemigo.slice(1);
+            
+            if (eleccion === eleccionEnemigo) {
+                empatar(eleccion, eleccionEnemigo);
+            } 
+            else if (
+                (eleccion === "piedra" && eleccionEnemigo === "tijera") ||
+                (eleccion === "papel" && eleccionEnemigo === "piedra") ||
+                (eleccion === "tijera" && eleccionEnemigo === "papel")
+            ) {
+                ganar(eleccion, eleccionEnemigo);
+            } 
+            else {
+                perder(eleccion, eleccionEnemigo);
             }
 
-            function empatar(){
-                displayResultado.textContent="Empate!"
-
-
-
-            }
-            function ganar(){
-                displayResultado.textContent="Has ganado!"
-                
-            }
-            function perder(){
-                displayResultado.textContent="Perdedor!"
-            }
-
-            function jugar(eleccion){
-                const eleccionEnemigo = choose(elecciones)
-                console.log("eleccion Jugador:",eleccion)
-                console.log("eleccion Enemigo:",eleccionEnemigo)
-
-                const piedraVSpapel = eleccion==="piedra" && eleccionEnemigo==="papel"
-
-                if(eleccion===eleccionEnemigo)empatar()
-                else if(eleccion==="piedra" && eleccionEnemigo==="papel")perder()
-                else if(eleccion==="piedra" && eleccionEnemigo==="tijera")ganar()
-                else if(eleccion==="papel" && eleccionEnemigo==="tijera")perder()
-                else if(eleccion==="papel" && eleccionEnemigo==="piedra")ganar()
-                else if(eleccion==="tijera" && eleccionEnemigo==="piedra")perder()
-                else if(eleccion==="tijera" && eleccionEnemigo==="papel")ganar()
-                
-            }
-
-        </script>
-
-   
+            actualizarDisplay();
+        }
+        
+    </script>
+</body>
 </html>
