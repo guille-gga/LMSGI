@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <fieldset>
+        <legend>Saludo</legend>
+        <label for="inputNombre">Nombre:</label>
+        <input type="text" name=""inputNombre id=""inputNombre>
+        <button onclick="enviar()">Click</button>
+        <p id=""resultado>Aqui tu nombre</p>
+    
+    </fieldset>
+
+
+    <fieldset>
+        <legend>Calculadora</legend>
+        <label for="inputA">Valor</label>
+        <input type="number" name="inputA" id="inputA">
+        <br>
+        <label for="inputB">Valor 2</label>
+        <input type="number" name="inputA" id = "inputB">
+    </br>
+        <button onclick="calcular()">Click</button>
+    </fieldset>
+
+    </fieldset>
+
+    <script src="js.js">
+        function enviar(){
+            const nombre= document.querySelector("#inputNombre").value 
+            const p = document.querySelector("#resultado")
+            p.textContent="Hola"+ nombre
+        }
+        function calcular(){
+            const inputA= document.querySelector("#inputA").value
+            const inputB = document.querySelector("#inputB").value
+
+            const suma= inputA+inputB
+            const resta= inputA-inputB
+            const mult= inputA*inputB
+            const division = inputA/inputB
+            const resto= inputA%inputB
+            console.log(typeof inputA)
+            console.log(typeof inputB)
+
+            const displaySuma= document.createElement("p")
+            const displayResta= document.createElement("p")
+            const displayMult= document.createElement("p")
+            const displayDivision= document.createElement("p")
+            const displayResto= document.createElement("p")
+
+            displaySuma.textContent = `Suma: $(suma)`
+            displayResta.textContent = `Resta: $(resta)`
+            displayMult.textContent = `Mult: $(mult)`
+            displayDivision.textContent = `Division: $(division)`
+            displayResto.textContent = `Resto: $(Resto)`
+
+            const displayResultados= document.querySelector("#ResultadoCalculo")
+            displayResultados.appendChild(displaySuma)
+            displayResultados.appendChild(displayResta)
+            displayResultados.appendChild(displayMult)
+            displayResultados.appendChild(displayDivision)
+            displayResultados.appendChild(displayResto)
+
+
+            //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse
+            //Almacenar arrays y objetos en localstorage
+        }
+    </script>
+</body>
+</html>
