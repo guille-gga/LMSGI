@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="form-movies"></form>
+
+<form>
+<fieldset>
+
+    <legend>Crear Pelicula</legend>
+    <label for="title">Titulo</label>
+    <input type="text" name="title" value="Titulo Pelicula">
+
+    <input type="checkbox" name="action" value="Action">
+    <label for="action">Action</label>
+
+    <input type="checkbox" name="drama" value="Drama">
+    <label for="drama">Drama</label>
+
+    <input type="checkbox" name="sci-fi" value="Sci-fi">
+    <label for="sci-fi">Sci-fi</label>
+
+    <input type="submit" value="Enviar">
+</fieldset>
+
+</form>
+
+<script>
+    const form = document.querySelector("#form-movies")
+
+    console.log(form)
+    form.addEventListener("submit", (event) =>{
+        event.preventDefault()
+        const formdata= new FormData(form)
+        const title = formdata.get("title")
+        console.log(title)
+        const action = formdata.get("action")
+        const drama = formdata.get("drama")
+        const scifi = formdata.get("sci-fi")
+
+        let genres=""
+        if(action) genres+= action
+        if (drama) genres += `/Drama`
+        if (drama) genres += `/Sci-Fi`
+
+        const data={
+            title,
+            genres
+        }
+        fetch("/test",{
+            method: "POST",
+            hearders:{
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(data)
+        })
+        .then(response => reponse.json())
+        .then (data => console.log(data))
+
+        
+
+        
+
+})
+
+</script>
+
+
+
+   <form action="/test" method="POST">
+
+    <legend>Formulario https</legend>
+    <br>
+    <label for="texto">Texto</label>
+    <input type="text" name="texto" value="ejemplo">
+    <input type="submit" value="Enviar">
+    <br>
+    <label for="numero">Número</label>
+    <input type="number" name="numero" value="0">
+    <br>
+    <label for="color">color</label>
+    <input type="color" name="color" value="#FFFFFF">
+    <br>
+    <label for="date"></label>
+    <input type="datetime-local" name ="datetime-local">
+    <br>
+    <label for="email">Email</label>
+    <br>
+    <input type="submint", value="enviar">
+    <br>
+    <label for="rango">Rango</label>
+    <input type="range" name="rango" >
+    <br>
+
+    <legend>Check</legend>
+
+    <input type="checkbox" name="cham sedine">
+    <label for="cham edine">Hey</label>
+    
+    <input type="checkbox" name ="queso">
+    <label for="queso">Queso</label>
+
+    <input type="checkbox" name ="pan">
+    <label for="pan">Trae pan</label>
+
+
+    <fieldset>
+        <legend>Radio</legend>
+        <input type="radio" name="pokemon" value="squirtle">
+        <label for="pokemon">squirtle</label>
+        <br>
+
+        <input type="radio" name="pokemon" value="bulbasur">
+        <label for="pokemon">bulbasur</label>
+        <br>
+         
+        <input type="radio" name="pokemon" value="charmander">
+        <label for="pokemon">charmander</label>
+        <br>
+
+
+    </fieldset>
+
+
+    
+   </form>
+</body>
+</html>
+
+
+//TAREA INTENGRAR ESTO EN NUESTRO SERVIDOR
