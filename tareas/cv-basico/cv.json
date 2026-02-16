@@ -1,0 +1,45 @@
+
+{ 
+
+"info": {
+    "nombre": "Guillermo Garcia Alguacil",
+    "ciudad": "Granada",
+    "pais": "España",
+    "email": "guillegarci07@gmail.com",
+    "telefono": "644827809",
+    "resumen": "Resumen",
+
+
+    "educacion" : [
+        {
+        "Centro": "NDT",
+        "ciudad": "Granada",
+        "titulo": "DAM"
+        }
+    ],
+
+    "experiencialab" : [
+        {
+        "Empresa": "LAS 4 RRRR",
+        "ciudad": "Huéscar",
+        "puesto": "Barra",
+        "descripcion":"Cmarero de barra en las fiestas de mi pueblo",
+        "fechas":"2024",
+
+        "Empresa2": "BeyKebab",
+        "ciudad2": "Granada",
+        "puesto2": "Cocina",
+        "descripcion2":"Cadena de comida rapida, trabajé en cocina",
+        "fechas2":"2025",
+
+        "logros": "Irme de alli"
+        }
+    ]
+
+
+    
+
+
+
+
+}}
